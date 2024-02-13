@@ -1,0 +1,61 @@
+﻿@layout EmptyLayout
+
+<img class="d-flex mx-auto mt-5" src="icon-192.png" alt="" style="width: 6rem;"/>
+
+<h3 class="text-center mt-3">TaskMaster</h3>
+
+<div class="card w-25 mx-auto mt-3">
+    <div class="card-body">
+        <EditForm Model="@_loginDto" OnValidSubmit="@LoginAsync">
+            <DataAnnotationsValidator/>
+
+            <div class="mb-3">
+                <label for="email" class="form-label">@Localizer["email"]:</label>
+                <InputText id="email" @bind-Value="@_loginDto.Email" class="form-control mb-1"/>
+                <ValidationMessage For="@(() => _loginDto.Email)"/>
+            </div>
+
+            <div class="mb-3">
+                <label for="password" class="form-label">@Localizer["password"]:</label>
+                <InputText type="password" id="password" @bind-Value="@_loginDto.Password" class="form-control mb-1"/>
+                <ValidationMessage For="@(() => _loginDto.Password)"/>
+            </div>
+
+            <button type="submit" class="btn btn-primary w-100">@Localizer["login"]</button>
+        </EditForm>
+    </div>
+</div>
+
+<BlazoredToasts Position="ToastPosition.BottomRight" Timeout="5" ShowProgressBar="true"/>
+
+@code {
+
+    [Inject]
+    public IUsersService UsersService { get; set; } = default!;
+
+    [Inject]
+    public NavigationManager NavigationManager { get; set; } = default!;
+
+    [Inject]
+    public IToastService ToastService { get; set; } = default!;
+
+    [Inject]
+    public IStringLocalizer<Resource> Localizer { get; set; } = default!;
+
+    private readonly LoginDto _loginDto = new();
+
+    private async Task LoginAsync()
+    {
+        try
+        {
+            await UsersService.LoginAsync(_loginDto);
+
+            NavigationManager.NavigateTo("/");
+        }
+        catch (Exception)
+        {
+            ToastService.ShowError(Localizer["invalid-credentials"]);
+        }
+    }
+
+}

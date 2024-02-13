@@ -1,0 +1,168 @@
+﻿@page "/users"
+
+@layout MainLayout
+
+@attribute [Authorize(Roles = "ADMIN")] 
+
+<PageTitle>TaskMaster - @Localizer["users"]</PageTitle>
+
+<div class="d-flex justify-content-between mb-3">
+    <h1 class="m-0">@Localizer["users"]</h1>
+    <button type="button" class="btn btn-success" @onclick="ShowCreateModalAsync">@Localizer["create-user"]</button>
+</div>
+
+@if (!_users.Any())
+{
+    <div class="alert alert-danger text-center" role="alert">
+        @Localizer["no-users-found"]
+    </div>
+}
+else
+{
+    <table class="table table-striped table-hover table-bordered">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>@Localizer["full-name"]</th>
+            <th>@Localizer["role"]</th>
+            <th>@Localizer["number-of-projects"]</th>
+            <th>@Localizer["number-of-tasks"]</th>
+            <th style="width: 10rem;"></th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (UserDto user in _users)
+        {
+            <tr>
+                <td>@user.Id</td>
+                <td>@($"{user.FirstName} {user.LastName}")</td>
+                <td>@user.Role</td>
+                <td>@(user.Projects is null ? "0" : user.Projects.Count())</td>
+                <td>@(user.Tasks is null ? "0" : user.Tasks.Count())</td>
+                <td style="width: 10rem;" class="justify-content-between d-flex">
+                    <button type="button" class="btn btn-primary" @onclick="() => ShowDetailsModal(user)">
+                        <span class="oi oi-document"></span>
+                    </button>
+                    <button type="button" class="btn btn-secondary" @onclick="() => ShowUpdateModalAsync(user)">
+                        <span class="oi oi-pencil"></span>
+                    </button>
+                    <button type="button" class="btn btn-danger" @onclick="@(() => ShowDeleteModalAsync(user.Id, $"{user.FirstName} {user.LastName}"))">
+                        <span class="oi oi-trash"></span>
+                    </button>
+                </td>
+            </tr>
+        }
+        </tbody>
+    </table>
+}
+
+@code {
+
+    [Inject]
+    public IUsersService UsersService { get; set; } = default!;
+
+    [Inject]
+    public IToastService ToastService { get; set; } = default!;
+    
+    [Inject]
+    public IStringLocalizer<Resource> Localizer { get; set; } = default!;
+
+    [CascadingParameter]
+    public IModalService ModalService { get; set; } = default!;
+
+    private IEnumerable<UserDto> _users = new List<UserDto>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        await GetUsersAsync();
+    }
+
+    private async Task GetUsersAsync()
+    {
+        try
+        {
+            _users = await UsersService.GetUsersAsync();
+        }
+        catch (Exception)
+        {
+            ToastService.ShowError(Localizer["error-loading-users"]);
+        }
+    }
+
+    private async Task ShowCreateModalAsync()
+    {
+        IModalReference modalReference = ModalService.Show<UserCreateModal>(@Localizer["create-user"]);
+
+        ModalResult modalResult = await modalReference.Result;
+
+        if (modalResult.Confirmed)
+        {
+            try
+            {
+                UserCreateDto userCreateDto = (UserCreateDto)modalResult.Data!;
+
+                await UsersService.CreateUserAsync(userCreateDto);
+
+                await GetUsersAsync();
+            }
+            catch (Exception)
+            {
+                ToastService.ShowError(Localizer["error-creating-user"]);
+            }
+        }
+    }
+
+    private void ShowDetailsModal(UserDto user)
+    {
+        ModalService.Show<UserDetailsModal>(Localizer["user-details"],
+            new ModalParameters().Add("User", user),
+            new ModalOptions { Size = ModalSize.Large });
+    }
+
+    private async Task ShowUpdateModalAsync(UserDto user)
+    {
+        IModalReference modalReference = ModalService.Show<UserUpdateModal>(Localizer["update-user"],
+            new ModalParameters().Add("User", user));
+
+        ModalResult modalResult = await modalReference.Result;
+
+        if (modalResult.Confirmed)
+        {
+            try
+            {
+                UserUpdateDto userUpdateDto = (UserUpdateDto)modalResult.Data!;
+
+                await UsersService.UpdateUserAsync(user.Id, userUpdateDto);
+
+                await GetUsersAsync();
+            }
+            catch (Exception)
+            {
+                ToastService.ShowError(Localizer["error-updating-user"]);
+            }
+        }
+    }
+
+    private async Task ShowDeleteModalAsync(int userId, string userFullName)
+    {
+        IModalReference modalReference = ModalService.Show<UserDeleteModal>(Localizer["delete-user"],
+            new ModalParameters().Add("UserFullName", userFullName));
+
+        ModalResult modalResult = await modalReference.Result;
+
+        if (modalResult.Confirmed)
+        {
+            try
+            {
+                await UsersService.DeleteUserAsync(userId);
+
+                await GetUsersAsync();
+            }
+            catch (Exception)
+            {
+                ToastService.ShowError(Localizer["error-deleting-user"]);
+            }
+        }
+    }
+
+}

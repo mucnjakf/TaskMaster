@@ -1,0 +1,225 @@
+﻿@page "/"
+
+@layout MainLayout
+
+@attribute [Authorize]
+
+<PageTitle>TaskMaster - @Localizer["dashboard"]</PageTitle>
+
+<AuthorizeView>
+    <h1>
+        @Localizer["welcome"] <span class="fw-bold">@context.User.FindFirst(x => x.Type == "sub")!.Value.Split("@")[0]</span>
+    </h1>
+</AuthorizeView>
+
+<hr/>
+
+<div class="d-flex justify-content-between mx-2">
+    @if (_projects.Any())
+    {
+        <InputSelect class="form-select w-25"
+                     Value="@_projectId"
+                     ValueExpression="@(() => _projectId)"
+                     ValueChanged="@((int projectId) => OnProjectChanged(projectId))">
+            @foreach (ProjectDto project in _projects)
+            {
+                <option value="@project.Id">@project.Name</option>
+            }
+        </InputSelect>
+
+        <button type="button" class="btn btn-success" @onclick="ShowCreateTaskModalAsync">@Localizer["create-task"]</button>
+    }
+    else
+    {
+        <button type="button" class="btn btn-success" @onclick="ShowCreateProjectModalAsync">@Localizer["create-project"]</button>
+    }
+</div>
+
+<SfKanban TValue="@ProjectTaskDto" KeyField="Status" DataSource="@_tasks" CssClass="mt-1">
+    <KanbanColumns>
+        <KanbanColumn HeaderText="@Localizer["backlog"]" KeyField="@(new List<string> { "Backlog" })"></KanbanColumn>
+        <KanbanColumn HeaderText="@Localizer["in-progress"]" KeyField="@(new List<string> { "InProgress" })"></KanbanColumn>
+        <KanbanColumn HeaderText="@Localizer["completed"]" KeyField="@(new List<string> { "Completed" })"></KanbanColumn>
+    </KanbanColumns>
+    <KanbanEvents TValue="ProjectTaskDto" DragStop="@UpdateTaskStatusAsync" DialogOpen="@OnDialogOpen"></KanbanEvents>
+    <KanbanCardSettings HeaderField="Id">
+        <Template>
+            @{
+                ProjectTaskDto data = (ProjectTaskDto)context;
+                <div class="e-card-content">
+                    <div class="container card-template-wrap">
+                        <div class="row mb-1">
+                            <div class="col-12 fw-bold fs-4">
+                                @data.Name
+                            </div>
+                        </div>
+
+                        <div class="row mb-1">
+                            <div class="col-12">
+                                @data.Assignee
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="d-flex justify-content-between" style="padding-right: 0;">
+                                <span class="align-self-center">ID @data.Id | <span class="text-danger">@LocalizationUtilities.LocalizePriority(data.Priority, Localizer)</span> @Localizer["priority"].ToString().ToLower()</span>
+                                <button type="button" class="btn btn-danger bg-transparent border-0 text-danger" @onclick="@(() => ShowDeleteTaskModalAsync(data.Id, data.Name))">
+                                    <span class="oi oi-trash"></span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </Template>
+    </KanbanCardSettings>
+</SfKanban>
+
+@code {
+
+    [Inject]
+    public IProjectsService ProjectsService { get; set; } = default!;
+
+    [Inject]
+    public ITasksService TasksService { get; set; } = default!;
+
+    [Inject]
+    public IToastService ToastService { get; set; } = default!;
+
+    [Inject]
+    public IStringLocalizer<Resource> Localizer { get; set; } = default!;
+
+    [CascadingParameter]
+    public IModalService ModalService { get; set; } = default!;
+
+    private IEnumerable<ProjectDto> _projects = new List<ProjectDto>();
+
+    private IEnumerable<ProjectTaskDto> _tasks = default!;
+
+    private int _projectId;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await GetProjectAndTasksAsync();
+    }
+
+    private async Task GetProjectAndTasksAsync()
+    {
+        try
+        {
+            _projects = (await ProjectsService.GetProjectsAsync()).ToList();
+            _projectId = _projects.Any() ? _projects.First().Id : 0;
+
+            _tasks = _projects.Any()
+                ? _projects.Single(x => x.Id == _projectId).Tasks ?? new List<ProjectTaskDto>()
+                : new List<ProjectTaskDto>();
+        }
+        catch (Exception)
+        {
+            ToastService.ShowError(Localizer["error-loading-projects-and-tasks"]);
+        }
+    }
+
+    private Task OnProjectChanged(int projectId)
+    {
+        _projectId = projectId;
+
+        _tasks = _projects.Single(x => x.Id == _projectId).Tasks ?? new List<ProjectTaskDto>();
+
+        return Task.CompletedTask;
+    }
+
+    private async Task ShowCreateProjectModalAsync()
+    {
+        IModalReference modalReference = ModalService.Show<ProjectCreateModal>(Localizer["create-project"]);
+
+        ModalResult modalResult = await modalReference.Result;
+
+        if (modalResult.Confirmed)
+        {
+            try
+            {
+                ProjectCreateDto projectCreateDto = (ProjectCreateDto)modalResult.Data!;
+
+                await ProjectsService.CreateProjectAsync(projectCreateDto);
+
+                await GetProjectAndTasksAsync();
+            }
+            catch (Exception)
+            {
+                ToastService.ShowError(Localizer["error-creating-project"]);
+            }
+        }
+    }
+
+    private async Task ShowCreateTaskModalAsync()
+    {
+        IModalReference modalReference = ModalService.Show<TaskCreateModal>(Localizer["create-task"]);
+
+        ModalResult modalResult = await modalReference.Result;
+
+        if (modalResult.Confirmed)
+        {
+            try
+            {
+                TaskCreateDto taskCreateDto = (TaskCreateDto)modalResult.Data!;
+
+                await TasksService.CreateTaskAsync(taskCreateDto);
+
+                await GetProjectAndTasksAsync();
+            }
+            catch (Exception)
+            {
+                ToastService.ShowError(Localizer["error-creating-task"]);
+            }
+        }
+    }
+
+    private async Task ShowDeleteTaskModalAsync(int taskId, string taskName)
+    {
+        IModalReference modalReference = ModalService.Show<TaskDeleteModal>(Localizer["delete-task"],
+            new ModalParameters().Add("TaskName", taskName));
+
+        ModalResult modalResult = await modalReference.Result;
+
+        if (modalResult.Confirmed)
+        {
+            try
+            {
+                await TasksService.DeleteTaskAsync(taskId);
+
+                await GetProjectAndTasksAsync();
+            }
+            catch (Exception)
+            {
+                ToastService.ShowError(Localizer["error-deleting-task"]);
+            }
+        }
+    }
+
+    private async Task UpdateTaskStatusAsync(DragEventArgs<ProjectTaskDto> args)
+    {
+        foreach (ProjectTaskDto task in args.Data)
+        {
+            try
+            {
+                await TasksService.UpdateTaskAsync(task.Id, new TaskUpdateDto
+                {
+                    Name = task.Name,
+                    Status = (TaskStatus)Enum.Parse(typeof(TaskStatus), task.Status),
+                    Priority = (TaskPriority)Enum.Parse(typeof(TaskPriority), task.Priority),
+                });
+            }
+            catch (Exception)
+            {
+                ToastService.ShowError(Localizer["error-updating-task-status"]);
+            }
+        }
+    }
+
+    private static void OnDialogOpen(DialogOpenEventArgs<ProjectTaskDto> args)
+    {
+        args.Cancel = true;
+    }
+
+}

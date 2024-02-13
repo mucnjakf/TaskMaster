@@ -1,0 +1,166 @@
+﻿@page "/projects"
+
+@layout MainLayout
+
+@attribute [Authorize]
+
+<PageTitle>TaskMaster - @Localizer["projects"]</PageTitle>
+
+<div class="d-flex justify-content-between mb-3">
+    <h1 class="m-0">@Localizer["projects"]</h1>
+    <button type="button" class="btn btn-success" @onclick="ShowCreateModalAsync">@Localizer["create-project"]</button>
+</div>
+
+@if (!_projects.Any())
+{
+    <div class="alert alert-danger text-center" role="alert">
+        @Localizer["no-projects-found"]
+    </div>
+}
+else
+{
+    <table class="table table-striped table-hover table-bordered">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>@Localizer["name"]</th>
+            <th>@Localizer["assignee"]</th>
+            <th>@Localizer["number-of-tasks"]</th>
+            <th style="width: 10rem;"></th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (ProjectDto project in _projects)
+        {
+            <tr>
+                <td>@project.Id</td>
+                <td>@project.Name</td>
+                <td>@project.Assignee.FullName</td>
+                <td>@(project.Tasks is null ? "0" : project.Tasks.Count()) </td>
+                <td style="width: 10rem;" class="justify-content-between d-flex">
+                    <button type="button" class="btn btn-primary" @onclick="() => ShowDetailsModal(project)">
+                        <span class="oi oi-document"></span>
+                    </button>
+                    <button type="button" class="btn btn-secondary" @onclick="() => ShowUpdateModalAsync(project)">
+                        <span class="oi oi-pencil"></span>
+                    </button>
+                    <button type="button" class="btn btn-danger" @onclick="() => ShowDeleteModalAsync(project.Id, project.Name)">
+                        <span class="oi oi-trash"></span>
+                    </button>
+                </td>
+            </tr>
+        }
+        </tbody>
+    </table>
+}
+
+@code {
+
+    [Inject]
+    public IProjectsService ProjectsService { get; set; } = default!;
+
+    [Inject]
+    public IToastService ToastService { get; set; } = default!;
+
+    [Inject]
+    public IStringLocalizer<Resource> Localizer { get; set; } = default!;
+
+    [CascadingParameter]
+    public IModalService ModalService { get; set; } = default!;
+
+    private IEnumerable<ProjectDto> _projects = new List<ProjectDto>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        await GetProjectsAsync();
+    }
+
+    private async Task GetProjectsAsync()
+    {
+        try
+        {
+            _projects = await ProjectsService.GetProjectsAsync();
+        }
+        catch (Exception)
+        {
+            ToastService.ShowError(Localizer["error-loading-projects"]);
+        }
+    }
+
+    private async Task ShowCreateModalAsync()
+    {
+        IModalReference modalReference = ModalService.Show<ProjectCreateModal>(Localizer["create-project"]);
+
+        ModalResult modalResult = await modalReference.Result;
+
+        if (modalResult.Confirmed)
+        {
+            try
+            {
+                ProjectCreateDto projectCreateDto = (ProjectCreateDto)modalResult.Data!;
+
+                await ProjectsService.CreateProjectAsync(projectCreateDto);
+
+                await GetProjectsAsync();
+            }
+            catch (Exception)
+            {
+                ToastService.ShowError(Localizer["error-creating-project"]);
+            }
+        }
+    }
+
+    private void ShowDetailsModal(ProjectDto project)
+    {
+        ModalService.Show<ProjectDetailsModal>(Localizer["project-details"],
+            new ModalParameters().Add("Project", project),
+            new ModalOptions { Size = ModalSize.Large });
+    }
+
+    private async Task ShowUpdateModalAsync(ProjectDto project)
+    {
+        IModalReference modalReference = ModalService.Show<ProjectUpdateModal>(Localizer["update-project"],
+            new ModalParameters().Add("Project", project));
+
+        ModalResult modalResult = await modalReference.Result;
+
+        if (modalResult.Confirmed)
+        {
+            try
+            {
+                ProjectUpdateDto projectUpdateDto = (ProjectUpdateDto)modalResult.Data!;
+
+                await ProjectsService.UpdateProjectAsync(project.Id, projectUpdateDto);
+
+                await GetProjectsAsync();
+            }
+            catch (Exception)
+            {
+                ToastService.ShowError(Localizer["error-updating-project"]);
+            }
+        }
+    }
+
+    private async Task ShowDeleteModalAsync(int projectId, string projectName)
+    {
+        IModalReference modalReference = ModalService.Show<ProjectDeleteModal>(Localizer["delete-project"],
+            new ModalParameters().Add("ProjectName", projectName));
+
+        ModalResult modalResult = await modalReference.Result;
+
+        if (modalResult.Confirmed)
+        {
+            try
+            {
+                await ProjectsService.DeleteProjectAsync(projectId);
+
+                await GetProjectsAsync();
+            }
+            catch (Exception)
+            {
+                ToastService.ShowError(Localizer["error-deleting-project"]);
+            }
+        }
+    }
+
+}

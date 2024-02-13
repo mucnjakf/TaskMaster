@@ -1,0 +1,106 @@
+﻿<div class="container">
+    <EditForm Model="@_projectCreateDto" OnValidSubmit="@CreateAsync">
+        <DataAnnotationsValidator/>
+
+        <div class="row">
+            <div class="col-12">
+                <label for="name" class="form-label">@Localizer["name"]:</label>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <InputText @bind-Value="@_projectCreateDto.Name" type="text" class="form-control mb-1" id="name"/>
+                <ValidationMessage For="@(() => _projectCreateDto.Name)"/>
+            </div>
+        </div>
+
+        <div class="row mt-3">
+            <div class="col-12">
+                <label for="description" class="form-label">@Localizer["description"]:</label>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <InputTextArea @bind-Value="@_projectCreateDto.Description" type="text" class="form-control mb-1" id="description" rows="3"/>
+                <ValidationMessage For="@(() => _projectCreateDto.Description)"/>
+            </div>
+        </div>
+
+        <div class="row mt-3">
+            <div class="col-12">
+                <label for="assignee" class="form-label">@Localizer["assignee"]:</label>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <InputSelect @bind-Value="@_assigneeId" class="form-select" id="assignee">
+                    @foreach (UserDto user in _users)
+                    {
+                        <option value="@user.Id">@($"{user.FirstName} {user.LastName}")</option>
+                    }
+                </InputSelect>
+            </div>
+        </div>
+
+        <hr/>
+
+        <div class="row">
+            <div class="col">
+                <button type="submit" class="btn btn-primary">@Localizer["confirm"]</button>
+                <button type="button" class="btn btn-secondary" @onclick="CancelAsync">@Localizer["cancel"]</button>
+            </div>
+        </div>
+    </EditForm>
+</div>
+
+@code {
+
+    [Inject]
+    public IUsersService UsersService { get; set; } = default!;
+
+    [Inject]
+    public IToastService ToastService { get; set; } = default!;
+
+    [Inject]
+    public IStringLocalizer<Resource> Localizer { get; set; } = default!;
+
+    [CascadingParameter]
+    public BlazoredModalInstance BlazoredModalInstance { get; set; } = default!;
+
+    private readonly ProjectCreateDto _projectCreateDto = new();
+
+    private IEnumerable<UserDto> _users = new List<UserDto>();
+
+    private int _assigneeId;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await InitializeUsersAndAssigneeAsync();
+    }
+
+    private async Task InitializeUsersAndAssigneeAsync()
+    {
+        try
+        {
+            _users = await UsersService.GetUsersAsync();
+            _assigneeId = _users.First().Id;
+        }
+        catch (Exception)
+        {
+            ToastService.ShowError(Localizer["error-loading-users"]);
+        }
+    }
+
+    private async Task CreateAsync()
+    {
+        _projectCreateDto.AssigneeId = _assigneeId;
+
+        await BlazoredModalInstance.CloseAsync(ModalResult.Ok(_projectCreateDto));
+    }
+
+    private async Task CancelAsync()
+    {
+        await BlazoredModalInstance.CancelAsync();
+    }
+
+}

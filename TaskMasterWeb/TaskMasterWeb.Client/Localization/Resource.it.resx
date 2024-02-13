@@ -1,0 +1,279 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+<root>
+    <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+        <xsd:element name="root" msdata:IsDataSet="true">
+            
+        </xsd:element>
+    </xsd:schema>
+    <resheader name="resmimetype">
+        <value>text/microsoft-resx</value>
+    </resheader>
+    <resheader name="version">
+        <value>1.3</value>
+    </resheader>
+    <resheader name="reader">
+        <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    </resheader>
+    <resheader name="writer">
+        <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    </resheader>
+    <data name="assignee" xml:space="preserve">
+        <value>Assegnatario</value>
+    </data>
+    <data name="assignee-email" xml:space="preserve">
+        <value>E-mail dell'assegnatario</value>
+    </data>
+    <data name="assignee-full-name" xml:space="preserve">
+        <value>Nome completo dell'assegnatario</value>
+    </data>
+    <data name="cancel" xml:space="preserve">
+        <value>Annulla</value>
+    </data>
+    <data name="close" xml:space="preserve">
+        <value>Vicino</value>
+    </data>
+    <data name="confirm" xml:space="preserve">
+        <value>Confermare</value>
+    </data>
+    <data name="create-project" xml:space="preserve">
+        <value>Crea progetto</value>
+    </data>
+    <data name="create-task" xml:space="preserve">
+        <value>Crea attività</value>
+    </data>
+    <data name="create-user" xml:space="preserve">
+        <value>Creare un utente</value>
+    </data>
+    <data name="dashboard" xml:space="preserve">
+        <value>Pannello di controllo</value>
+    </data>
+    <data name="delete-project" xml:space="preserve">
+        <value>Elimina progetto</value>
+    </data>
+    <data name="delete-project-content" xml:space="preserve">
+        <value>Sei sicuro di voler eliminare il progetto</value>
+    </data>
+    <data name="delete-task" xml:space="preserve">
+        <value>Elimina attività</value>
+    </data>
+    <data name="delete-task-content" xml:space="preserve">
+        <value>Sei sicuro di voler eliminare l'attività</value>
+    </data>
+    <data name="delete-user-content" xml:space="preserve">
+        <value>Sei sicuro di voler eliminare l'utente</value>
+    </data>
+    <data name="delete-user" xml:space="preserve">
+        <value>Elimina utente</value>
+    </data>
+    <data name="description" xml:space="preserve">
+        <value>Descrizione</value>
+    </data>
+    <data name="email" xml:space="preserve">
+        <value>Email</value>
+    </data>
+    <data name="first-name" xml:space="preserve">
+        <value>Nome di battesimo</value>
+    </data>
+    <data name="full-name" xml:space="preserve">
+        <value>Nome e cognome</value>
+    </data>
+    <data name="last-name" xml:space="preserve">
+        <value>Cognome</value>
+    </data>
+    <data name="login" xml:space="preserve">
+        <value>Login</value>
+    </data>
+    <data name="logout" xml:space="preserve">
+        <value>Disconnettersi</value>
+    </data>
+    <data name="name" xml:space="preserve">
+        <value>Nome</value>
+    </data>
+    <data name="number-of-projects" xml:space="preserve">
+        <value>Numero di progetti</value>
+    </data>
+    <data name="number-of-tasks" xml:space="preserve">
+        <value>Numero di compiti</value>
+    </data>
+    <data name="password" xml:space="preserve">
+        <value>Parola d'ordine</value>
+    </data>
+    <data name="priority" xml:space="preserve">
+        <value>Priorità</value>
+    </data>
+    <data name="project" xml:space="preserve">
+        <value>Progetto</value>
+    </data>
+    <data name="project-assignee" xml:space="preserve">
+        <value>Assegnatario del progetto</value>
+    </data>
+    <data name="project-details" xml:space="preserve">
+        <value>Dettagli del progetto</value>
+    </data>
+    <data name="project-name" xml:space="preserve">
+        <value>Nome del progetto</value>
+    </data>
+    <data name="projects" xml:space="preserve">
+        <value>Progetti</value>
+    </data>
+    <data name="role" xml:space="preserve">
+        <value>Ruolo</value>
+    </data>
+    <data name="status" xml:space="preserve">
+        <value>Stato</value>
+    </data>
+    <data name="task-details" xml:space="preserve">
+        <value>Dettagli dell'attività</value>
+    </data>
+    <data name="tasks" xml:space="preserve">
+        <value>Compiti</value>
+    </data>
+    <data name="update-project" xml:space="preserve">
+        <value>Aggiorna progetto</value>
+    </data>
+    <data name="update-task" xml:space="preserve">
+        <value>Aggiorna progetto</value>
+    </data>
+    <data name="update-user" xml:space="preserve">
+        <value>Aggiorna utente</value>
+    </data>
+    <data name="user-details" xml:space="preserve">
+        <value>Dettagli dell'utente</value>
+    </data>
+    <data name="users" xml:space="preserve">
+        <value>Utenti</value>
+    </data>
+    <data name="welcome" xml:space="preserve">
+        <value>Benvenuto</value>
+    </data>
+    <data name="admin" xml:space="preserve">
+        <value>ADMIN</value>
+    </data>
+    <data name="no-projects-found" xml:space="preserve">
+        <value>Nessun progetto trovato</value>
+    </data>
+    <data name="no-tasks-found" xml:space="preserve">
+        <value>Nessuna attività trovata</value>
+    </data>
+    <data name="no-users-found" xml:space="preserve">
+        <value>Nessun utente trovato</value>
+    </data>
+    <data name="not-found" xml:space="preserve">
+        <value>Non trovato</value>
+    </data>
+    <data name="nothing-at-address" xml:space="preserve">
+        <value>Mi dispiace, non c'è niente a questo indirizzo.</value>
+    </data>
+    <data name="user" xml:space="preserve">
+        <value>USER</value>
+    </data>
+    <data name="delete-report-content" xml:space="preserve">
+        <value>Sei sicuro di voler eliminare il report generato in</value>
+    </data>
+    <data name="generated-at" xml:space="preserve">
+        <value>Generato a</value>
+    </data>
+    <data name="no-reports-found" xml:space="preserve">
+        <value>Nessun rapporto trovato</value>
+    </data>
+    <data name="reports" xml:space="preserve">
+        <value>Rapporti</value>
+    </data>
+    <data name="tasks-in-backlog" xml:space="preserve">
+        <value>Compiti in arretrato</value>
+    </data>
+    <data name="tasks-in-progress" xml:space="preserve">
+        <value>Compiti in corso</value>
+    </data>
+    <data name="tasks-completed" xml:space="preserve">
+        <value>Attività completate</value>
+    </data>
+    <data name="total-tasks" xml:space="preserve">
+        <value>Compiti totali</value>
+    </data>
+    <data name="backlog" xml:space="preserve">
+        <value>Arretrato</value>
+    </data>
+    <data name="completed" xml:space="preserve">
+        <value>Completato</value>
+    </data>
+    <data name="delete-report" xml:space="preserve">
+        <value>Elimina rapporto</value>
+    </data>
+    <data name="error-creating-project" xml:space="preserve">
+        <value>Elimina rapporto</value>
+    </data>
+    <data name="error-creating-task" xml:space="preserve">
+        <value>Errore durante la creazione dell'attività</value>
+    </data>
+    <data name="error-creating-user" xml:space="preserve">
+        <value>Errore durante la creazione dell'utente</value>
+    </data>
+    <data name="error-deleting-project" xml:space="preserve">
+        <value>Errore durante l'eliminazione del progetto</value>
+    </data>
+    <data name="error-deleting-report" xml:space="preserve">
+        <value>Errore durante l'eliminazione del rapporto</value>
+    </data>
+    <data name="error-deleting-task" xml:space="preserve">
+        <value>Errore durante l'eliminazione dell'attività</value>
+    </data>
+    <data name="error-deleting-user" xml:space="preserve">
+        <value>Errore durante l'eliminazione dell'utente</value>
+    </data>
+    <data name="error-loading-projects" xml:space="preserve">
+        <value>Errore durante il caricamento dei progetti</value>
+    </data>
+    <data name="error-loading-projects-and-tasks" xml:space="preserve">
+        <value>Errore durante il caricamento di progetti e attività</value>
+    </data>
+    <data name="error-loading-projects-and-users" xml:space="preserve">
+        <value>Errore durante il caricamento di progetti e utenti</value>
+    </data>
+    <data name="error-loading-reports" xml:space="preserve">
+        <value>Errore durante il caricamento dei report</value>
+    </data>
+    <data name="error-loading-tasks" xml:space="preserve">
+        <value>Errore durante il caricamento delle attività</value>
+    </data>
+    <data name="error-loading-users" xml:space="preserve">
+        <value>Errore durante il caricamento degli utenti</value>
+    </data>
+    <data name="error-updating-project" xml:space="preserve">
+        <value>Errore durante il caricamento degli utenti</value>
+    </data>
+    <data name="error-updating-task" xml:space="preserve">
+        <value>Errore durante l'aggiornamento dell'attività</value>
+    </data>
+    <data name="error-updating-task-status" xml:space="preserve">
+        <value>Errore durante l'aggiornamento dello stato dell'attività</value>
+    </data>
+    <data name="error-updating-user" xml:space="preserve">
+        <value>Errore durante l'aggiornamento dell'utente</value>
+    </data>
+    <data name="in-progress" xml:space="preserve">
+        <value>In corso</value>
+    </data>
+    <data name="invalid-credentials" xml:space="preserve">
+        <value>Credenziali non valide</value>
+    </data>
+    <data name="create-report" xml:space="preserve">
+        <value>Crea rapporto</value>
+    </data>
+    <data name="error-creating-report" xml:space="preserve">
+        <value>Errore durante la creazione del rapporto</value>
+    </data>
+    <data name="report-created" xml:space="preserve">
+        <value>Rapporto creato con successo</value>
+    </data>
+    <data name="low" xml:space="preserve">
+        <value>Bassa</value>
+    </data>
+    <data name="high" xml:space="preserve">
+        <value>Alta</value>
+    </data>
+    <data name="medium" xml:space="preserve">
+        <value>Media</value>
+    </data>
+</root>

@@ -1,0 +1,105 @@
+﻿<div class="container">
+    <EditForm Model="@_userCreateDto" OnValidSubmit="@CreateAsync">
+        <DataAnnotationsValidator/>
+
+        <div class="row">
+            <div class="col-12">
+                <label for="email" class="form-label">@Localizer["email"]:</label>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <InputText @bind-Value="@_userCreateDto.Email" type="email" class="form-control mb-1" id="email"/>
+                <ValidationMessage For="@(() => _userCreateDto.Email)"/>
+            </div>
+        </div>
+
+        <div class="row mt-3">
+            <div class="col-12">
+                <label for="password" class="form-label">@Localizer["password"]:</label>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <InputText @bind-Value="@_userCreateDto.Password" type="password" class="form-control mb-1" id="password"/>
+                <ValidationMessage For="@(() => _userCreateDto.Password)"/>
+            </div>
+        </div>
+
+        <div class="row mt-3">
+            <div class="col-12">
+                <label for="firstName" class="form-label">@Localizer["first-name"]:</label>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <InputText @bind-Value="@_userCreateDto.FirstName" type="text" class="form-control mb-1" id="firstName"/>
+                <ValidationMessage For="@(() => _userCreateDto.FirstName)"/>
+            </div>
+        </div>
+
+        <div class="row mt-3">
+            <div class="col-12">
+                <label for="lastName" class="form-label">@Localizer["last-name"]:</label>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <InputText @bind-Value="@_userCreateDto.LastName" type="text" class="form-control mb-1" id="lastName"/>
+                <ValidationMessage For="@(() => _userCreateDto.LastName)"/>
+            </div>
+        </div>
+
+        <div class="row mt-3">
+            <div class="col-12">
+                <label for="role" class="form-label">@Localizer["role"]:</label>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <InputSelect @bind-Value="@_role" class="form-select mb-1" id="role">
+                    <option value="ADMIN" selected="selected">@Localizer["admin"]</option>
+                    <option value="USER">@Localizer["user"]</option>
+                </InputSelect>
+            </div>
+        </div>
+
+        <hr/>
+
+        <div class="row">
+            <div class="col">
+                <button type="submit" class="btn btn-primary">@Localizer["confirm"]</button>
+                <button type="button" class="btn btn-secondary" @onclick="CancelAsync">@Localizer["cancel"]</button>
+            </div>
+        </div>
+    </EditForm>
+</div>
+
+@code {
+
+    [Inject]
+    public IUsersService UsersService { get; set; } = default!;
+
+    [Inject]
+    public IStringLocalizer<Resource> Localizer { get; set; } = default!;
+
+    [CascadingParameter]
+    public BlazoredModalInstance BlazoredModalInstance { get; set; } = default!;
+
+    private readonly UserCreateDto _userCreateDto = new();
+
+    private string _role = "ADMIN";
+
+    private async Task CreateAsync()
+    {
+        _userCreateDto.Role = _role;
+
+        await BlazoredModalInstance.CloseAsync(ModalResult.Ok(_userCreateDto));
+    }
+
+    private async Task CancelAsync()
+    {
+        await BlazoredModalInstance.CancelAsync();
+    }
+
+}

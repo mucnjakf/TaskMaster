@@ -1,0 +1,280 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+<root>
+    <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+        <xsd:element name="root" msdata:IsDataSet="true">
+            
+        </xsd:element>
+    </xsd:schema>
+    <resheader name="resmimetype">
+        <value>text/microsoft-resx</value>
+    </resheader>
+    <resheader name="version">
+        <value>1.3</value>
+    </resheader>
+    <resheader name="reader">
+        <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    </resheader>
+    <resheader name="writer">
+        <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    </resheader>
+    <data name="assignee" xml:space="preserve">
+        <value>Korisnik</value>
+    </data>
+    <data name="assignee-email" xml:space="preserve">
+        <value>Email korisnika</value>
+    </data>
+    <data name="assignee-full-name" xml:space="preserve">
+        <value>Ime korisnika</value>
+    </data>
+    <data name="cancel" xml:space="preserve">
+        <value>Odustani</value>
+    </data>
+    <data name="close" xml:space="preserve">
+        <value>Zatvori</value>
+    </data>
+    <data name="confirm" xml:space="preserve">
+        <value>Potvrdi</value>
+    </data>
+    <data name="create-project" xml:space="preserve">
+        <value>Kreiraj projekt</value>
+    </data>
+    <data name="create-task" xml:space="preserve">
+        <value>Kreiraj zadatak</value>
+    </data>
+    <data name="create-user" xml:space="preserve">
+        <value>Kreiraj korisnika</value>
+    </data>
+    <data name="dashboard" xml:space="preserve">
+        <value>Kontrolna ploča</value>
+    </data>
+    <data name="delete-project" xml:space="preserve">
+        <value>Obriši projekt</value>
+    </data>
+    <data name="delete-project-content" xml:space="preserve">
+        <value>Jeste li sigurni da želite obrisati projekt</value>
+    </data>
+    <data name="delete-task" xml:space="preserve">
+        <value>Obriši zadatak</value>
+    </data>
+    <data name="delete-task-content" xml:space="preserve">
+        <value>Jeste li sigurni da želite obrisati zadatak</value>
+    </data>
+    <data name="delete-user" xml:space="preserve">
+        <value>Obriši korisnika</value>
+    </data>
+    <data name="delete-user-content" xml:space="preserve">
+        <value>Jeste li sigurni da želite obrisati korisnika</value>
+    </data>
+    <data name="description" xml:space="preserve">
+        <value>Opis</value>
+    </data>
+    <data name="email" xml:space="preserve">
+        <value>Email</value>
+    </data>
+    <data name="first-name" xml:space="preserve">
+        <value>Ime</value>
+    </data>
+    <data name="full-name" xml:space="preserve">
+        <value>Puno ime</value>
+    </data>
+    <data name="last-name" xml:space="preserve">
+        <value>Prezime</value>
+    </data>
+    <data name="login" xml:space="preserve">
+        <value>Prijavi se</value>
+    </data>
+    <data name="logout" xml:space="preserve">
+        <value>Odjavi se</value>
+    </data>
+    <data name="name" xml:space="preserve">
+        <value>Ime</value>
+    </data>
+    <data name="number-of-projects" xml:space="preserve">
+        <value>Broj projekata</value>
+    </data>
+    <data name="number-of-tasks" xml:space="preserve">
+        <value>Broj zadataka</value>
+    </data>
+    <data name="password" xml:space="preserve">
+        <value>Lozinka</value>
+    </data>
+    <data name="priority" xml:space="preserve">
+        <value>Prioritet</value>
+    </data>
+    <data name="project" xml:space="preserve">
+        <value>Projekt</value>
+    </data>
+    <data name="project-assignee" xml:space="preserve">
+        <value>Korisnik projekta</value>
+    </data>
+    <data name="project-details" xml:space="preserve">
+        <value>Detalji projekta</value>
+    </data>
+    <data name="project-name" xml:space="preserve">
+        <value>Ime projekta</value>
+    </data>
+    <data name="projects" xml:space="preserve">
+        <value>Projekti</value>
+    </data>
+    <data name="role" xml:space="preserve">
+        <value>Uloga</value>
+    </data>
+    <data name="status" xml:space="preserve">
+        <value>Status</value>
+    </data>
+    <data name="task-details" xml:space="preserve">
+        <value>Detalji zadatka</value>
+    </data>
+    <data name="tasks" xml:space="preserve">
+        <value>Zadaci</value>
+    </data>
+    <data name="update-project" xml:space="preserve">
+        <value>Ažuriraj projekt</value>
+    </data>
+    <data name="update-task" xml:space="preserve">
+        <value>Ažuriraj zadatak</value>
+    </data>
+    <data name="update-user" xml:space="preserve">
+        <value>Ažuriraj korisnika</value>
+    </data>
+    <data name="user-details" xml:space="preserve">
+        <value>Detalji korisnika</value>
+    </data>
+    <data name="users" xml:space="preserve">
+        <value>Korisnici</value>
+    </data>
+    <data name="welcome" xml:space="preserve">
+        <value>Dobrodošli</value>
+    </data>
+    <data name="admin" xml:space="preserve">
+        <value>ADMIN</value>
+    </data>
+    <data name="no-projects-found" xml:space="preserve">
+        <value>Projekti nisu pronađeni</value>
+    </data>
+    <data name="no-tasks-found" xml:space="preserve">
+        <value>Zadaci nisu pronađeni</value>
+    </data>
+    <data name="no-users-found" xml:space="preserve">
+        <value>Korisnici nisu pronađeni</value>
+    </data>
+    <data name="not-found" xml:space="preserve">
+        <value>Nije pronađeno</value>
+    </data>
+    <data name="nothing-at-address" xml:space="preserve">
+        <value>Nažalost, na ovoj adresi nema ničega.</value>
+    </data>
+    <data name="user" xml:space="preserve">
+        <value>USER</value>
+    </data>
+    <data name="delete-report-content" xml:space="preserve">
+        <value>Jeste li sigurni da želite izbrisati izvješće koje je generirano</value>
+    </data>
+    <data name="generated-at" xml:space="preserve">
+        <value>Generirano</value>
+    </data>
+    <data name="no-reports-found" xml:space="preserve">
+        <value>Izvješća nisu pronađena
+</value>
+    </data>
+    <data name="reports" xml:space="preserve">
+        <value>Izvještaji</value>
+    </data>
+    <data name="tasks-completed" xml:space="preserve">
+        <value>Obavljeni zadaci</value>
+    </data>
+    <data name="tasks-in-backlog" xml:space="preserve">
+        <value>Zadaci u zaostatku</value>
+    </data>
+    <data name="tasks-in-progress" xml:space="preserve">
+        <value>Zadaci u tijeku</value>
+    </data>
+    <data name="total-tasks" xml:space="preserve">
+        <value>Ukupno zadataka</value>
+    </data>
+    <data name="backlog" xml:space="preserve">
+        <value>Zaostatak</value>
+    </data>
+    <data name="completed" xml:space="preserve">
+        <value>Završeno</value>
+    </data>
+    <data name="delete-report" xml:space="preserve">
+        <value>Izbriši izvješće</value>
+    </data>
+    <data name="error-creating-project" xml:space="preserve">
+        <value>Pogreška prilikom izrade projekta</value>
+    </data>
+    <data name="error-creating-task" xml:space="preserve">
+        <value>Pogreška prilikom izrade zadatka</value>
+    </data>
+    <data name="error-creating-user" xml:space="preserve">
+        <value>Pogreška prilikom izrade korisnika</value>
+    </data>
+    <data name="error-deleting-project" xml:space="preserve">
+        <value>Pogreška prilikom brisanja projekta</value>
+    </data>
+    <data name="error-deleting-report" xml:space="preserve">
+        <value>Pogreška prilikom brisanja izvješća</value>
+    </data>
+    <data name="error-deleting-task" xml:space="preserve">
+        <value>Pogreška prilikom brisanja zadatka</value>
+    </data>
+    <data name="error-deleting-user" xml:space="preserve">
+        <value>Pogreška prilikom brisanja korisnika</value>
+    </data>
+    <data name="error-loading-projects" xml:space="preserve">
+        <value>Pogreška prilikom učitavanja projekata</value>
+    </data>
+    <data name="error-loading-projects-and-tasks" xml:space="preserve">
+        <value>Pogreška prilikom učitavanja projekata i zadataka</value>
+    </data>
+    <data name="error-loading-projects-and-users" xml:space="preserve">
+        <value>Pogreška prilikom učitavanja projekata i korisnika</value>
+    </data>
+    <data name="error-loading-reports" xml:space="preserve">
+        <value>Pogreška prilikom učitavanja izvješća</value>
+    </data>
+    <data name="error-loading-tasks" xml:space="preserve">
+        <value>Pogreška prilikom učitavanja zadataka</value>
+    </data>
+    <data name="error-loading-users" xml:space="preserve">
+        <value>Pogreška prilikom učitavanja korisnika</value>
+    </data>
+    <data name="error-updating-project" xml:space="preserve">
+        <value>Pogreška prilikom ažuriranja projekta</value>
+    </data>
+    <data name="error-updating-task" xml:space="preserve">
+        <value>Pogreška prilikom ažuriranja zadatka</value>
+    </data>
+    <data name="error-updating-task-status" xml:space="preserve">
+        <value>Pogreška prilikom ažuriranja statusa zadatka</value>
+    </data>
+    <data name="error-updating-user" xml:space="preserve">
+        <value>Pogreška prilikom ažuriranja korisnika</value>
+    </data>
+    <data name="in-progress" xml:space="preserve">
+        <value>U nastajanju</value>
+    </data>
+    <data name="invalid-credentials" xml:space="preserve">
+        <value>Nevažeće vjerodajnice</value>
+    </data>
+    <data name="create-report" xml:space="preserve">
+        <value>Izradi izvješće</value>
+    </data>
+    <data name="error-creating-report" xml:space="preserve">
+        <value>Pogreška prilikom izrade izvješća</value>
+    </data>
+    <data name="report-created" xml:space="preserve">
+        <value>Izvješće je uspješno kreirano</value>
+    </data>
+    <data name="low" xml:space="preserve">
+        <value>Nizak</value>
+    </data>
+    <data name="high" xml:space="preserve">
+        <value>Visoki</value>
+    </data>
+    <data name="medium" xml:space="preserve">
+        <value>Srednji</value>
+    </data>
+</root>

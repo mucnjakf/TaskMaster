@@ -1,0 +1,19 @@
+﻿@page "/logout"
+
+@layout EmptyLayout
+
+@code {
+
+    [Inject]
+    public IUsersService UsersService { get; set; } = default!;
+
+    [Inject]
+    public NavigationManager NavigationManager { get; set; } = default!;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await UsersService.LogoutAsync();
+        NavigationManager.NavigateTo("/");
+    }
+
+}

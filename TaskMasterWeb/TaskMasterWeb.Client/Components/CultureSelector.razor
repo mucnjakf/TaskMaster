@@ -1,0 +1,39 @@
+﻿<select class="form-control text-center" @bind="Culture" style="width:100px; margin-left:10px;">
+    @foreach (CultureInfo culture in _cultures)
+    {
+        <option value="@culture">@culture.NativeName</option>
+    }
+</select>
+
+@code {
+
+    [Inject]
+    public NavigationManager NavigationManager { get; set; } = default!;
+
+    [Inject]
+    public IJSRuntime JsRuntime { get; set; } = default!;
+
+    private readonly CultureInfo[] _cultures =
+    {
+        new("en-US"),
+        new("hr-HR"),
+        new("it-IT")
+    };
+
+    private CultureInfo Culture
+    {
+        get => CultureInfo.CurrentCulture;
+        set
+        {
+            if (!Equals(CultureInfo.CurrentCulture, value))
+            {
+                IJSInProcessRuntime js = (IJSInProcessRuntime)JsRuntime;
+
+                js.InvokeVoid("blazorCulture.set", value.Name);
+
+                NavigationManager.NavigateTo(NavigationManager.Uri, forceLoad: true);
+            }
+        }
+    }
+
+}

@@ -1,0 +1,98 @@
+﻿<div class="container">
+    <EditForm Model="@_taskUpdateDto" OnValidSubmit="@UpdateAsync">
+        <DataAnnotationsValidator/>
+
+        <div class="row">
+            <div class="col-12">
+                <label for="name" class="form-label">@Localizer["name"]:</label>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <InputText @bind-Value="@_taskUpdateDto.Name" type="text" class="form-control mb-1" id="name"/>
+                <ValidationMessage For="@(() => _taskUpdateDto.Name)"/>
+            </div>
+        </div>
+
+        <div class="row mt-3">
+            <div class="col-12">
+                <label for="status" class="form-label">@Localizer["status"]:</label>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <InputSelect @bind-Value="@_taskUpdateDto.Status" class="form-select mb-1" id="status">
+                    @foreach (string status in Enum.GetNames(typeof(TaskStatus)))
+                    {
+                        <option value="@status">@LocalizationUtilities.LocalizeStatus(status, Localizer)</option>
+                    }
+                </InputSelect>
+                <ValidationMessage For="@(() => _taskUpdateDto.Status)"/>
+            </div>
+        </div>
+
+        <div class="row mt-3">
+            <div class="col-12">
+                <label for="priority" class="form-label">@Localizer["priority"]:</label>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <InputSelect @bind-Value="@_taskUpdateDto.Priority" class="form-select mb-1" id="priority">
+                    @foreach (string priority in Enum.GetNames(typeof(TaskPriority)))
+                    {
+                        <option value="@priority">@LocalizationUtilities.LocalizePriority(priority, Localizer)</option>
+                    }
+                </InputSelect>
+                <ValidationMessage For="@(() => _taskUpdateDto.Priority)"/>
+            </div>
+        </div>
+
+        <hr/>
+
+        <div class="row">
+            <div class="col">
+                <button type="submit" class="btn btn-primary">@Localizer["confirm"]</button>
+                <button type="button" class="btn btn-secondary" @onclick="CancelAsync">@Localizer["cancel"]</button>
+            </div>
+        </div>
+    </EditForm>
+</div>
+
+@code {
+
+    [Inject]
+    public IStringLocalizer<Resource> Localizer { get; set; } = default!;
+
+    [Parameter]
+    public TaskDto Task { get; set; } = default!;
+
+    [CascadingParameter]
+    public BlazoredModalInstance BlazoredModalInstance { get; set; } = default!;
+
+    private readonly TaskUpdateDto _taskUpdateDto = new();
+
+    protected override void OnInitialized()
+    {
+        InitializeTaskUpdateDto();
+    }
+
+    private void InitializeTaskUpdateDto()
+    {
+        _taskUpdateDto.Name = Task.Name;
+        _taskUpdateDto.Status = (TaskStatus)Enum.Parse(typeof(TaskStatus), Task.Status);
+        _taskUpdateDto.Priority = (TaskPriority)Enum.Parse(typeof(TaskPriority), Task.Priority);
+    }
+
+    private async Task UpdateAsync()
+    {
+        await BlazoredModalInstance.CloseAsync(ModalResult.Ok(_taskUpdateDto));
+    }
+
+    private async Task CancelAsync()
+    {
+        await BlazoredModalInstance.CancelAsync();
+    }
+
+
+}

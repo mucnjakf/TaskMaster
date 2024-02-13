@@ -1,0 +1,117 @@
+﻿<div class="container">
+    <div class="row">
+        <div class="col-6">
+            ID:
+        </div>
+        <div class="col-6">
+            @Localizer["email"]:
+        </div>
+    </div>
+    <div class="row lead fw-bold">
+        <div class="col-6">
+            @User.Id
+        </div>
+        <div class="col-6">
+            @User.Email
+        </div>
+    </div>
+
+    <hr/>
+
+    <div class="row">
+        <div class="col-6">
+            @Localizer["name"]:
+        </div>
+        <div class="col-6">
+            @Localizer["role"]:
+        </div>
+    </div>
+    <div class="row lead fw-bold">
+        <div class="col-6">
+            @User.FirstName @User.LastName
+        </div>
+        <div class="col-6">
+            @User.Role
+        </div>
+    </div>
+
+    <hr/>
+
+    <div class="row mt-3">
+        <div class="col-12">
+            @Localizer["projects"]
+        </div>
+    </div>
+    <div class="row mt-2">
+        <div class="col-12">
+            <ul class="list-group">
+                @if (User.Projects is null || !User.Projects.Any())
+                {
+                    <li class="list-group-item list-group-item-danger">@Localizer["no-projects-found"]</li>
+                }
+                else
+                {
+                    @foreach (UserProjectDto project in User.Projects)
+                    {
+                        <li class="list-group-item">
+                            <span>@project.Id</span> | <span>@project.Name</span>
+                        </li>
+                    }
+                }
+            </ul>
+        </div>
+    </div>
+
+    <hr/>
+
+    <div class="row mt-3">
+        <div class="col-12">
+            @Localizer["tasks"]
+        </div>
+    </div>
+    <div class="row mt-2">
+        <div class="col-12">
+            <ul class="list-group">
+                @if (User.Tasks is null || !User.Tasks.Any())
+                {
+                    <li class="list-group-item list-group-item-danger">@Localizer["no-tasks-found"]</li>
+                }
+                else
+                {
+                    @foreach (UserTaskDto task in User.Tasks)
+                    {
+                        <li class="list-group-item">
+                            <span>@task.Id</span> | <span>@task.Name</span> | <span>@LocalizationUtilities.LocalizePriority(task.Priority, Localizer)</span> | <span>@LocalizationUtilities.LocalizeStatus(task.Status, Localizer)</span>
+                        </li>
+                    }
+                }
+            </ul>
+        </div>
+    </div>
+
+    <hr/>
+
+    <div class="row">
+        <div class="col">
+            <button class="btn btn-primary" @onclick="CloseAsync">@Localizer["close"]</button>
+        </div>
+    </div>
+</div>
+
+@code {
+
+    [Inject]
+    public IStringLocalizer<Resource> Localizer { get; set; } = default!;
+
+    [Parameter]
+    public UserDto User { get; set; } = default!;
+
+    [CascadingParameter]
+    public BlazoredModalInstance BlazoredModalInstance { get; set; } = default!;
+
+    private async Task CloseAsync()
+    {
+        await BlazoredModalInstance.CloseAsync(ModalResult.Cancel());
+    }
+
+}

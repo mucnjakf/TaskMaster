@@ -1,0 +1,125 @@
+﻿@page "/reports"
+
+@layout MainLayout
+
+@attribute [Authorize(Roles = "ADMIN")] 
+
+<PageTitle>TaskMaster - @Localizer["reports"]</PageTitle>
+
+<div class="d-flex justify-content-between mb-3">
+    <h1 class="m-0">@Localizer["reports"]</h1>
+    <button type="button" class="btn btn-success" @onclick="CreateReportAsync">@Localizer["create-report"]</button>
+</div>
+
+@if (!_reports.Any())
+{
+    <div class="alert alert-danger text-center" role="alert">
+        @Localizer["no-reports-found"]
+    </div>
+}
+else
+{
+    <table class="table table-striped table-hover table-bordered">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>@Localizer["generated-at"]</th>
+            <th>@Localizer["total-tasks"]</th>
+            <th>@Localizer["tasks-in-backlog"]</th>
+            <th>@Localizer["tasks-in-progress"]</th>
+            <th>@Localizer["tasks-completed"]</th>
+            <th style="width: 5rem;"></th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (ReportDto report in _reports)
+        {
+            <tr>
+                <td>@report.Id</td>
+                <td>@DateTime.Parse(report.GeneratedAt).ToString("F")</td>
+                <td>@report.TotalTasks</td>
+                <td>@report.TasksInBacklog</td>
+                <td>@report.TasksInProgress</td>
+                <td>@report.TasksCompleted</td>
+                <td style="width: 5rem;" class="justify-content-center d-flex">
+                    <button type="button" class="btn btn-danger" @onclick="@(() => ShowDeleteModalAsync(report.Id, report.GeneratedAt))">
+                        <span class="oi oi-trash"></span>
+                    </button>
+                </td>
+            </tr>
+        }
+        </tbody>
+    </table>
+}
+
+@code {
+
+    [Inject]
+    public IReportsService ReportsService { get; set; } = default!;
+
+    [Inject]
+    public IToastService ToastService { get; set; } = default!;
+
+    [Inject]
+    public IStringLocalizer<Resource> Localizer { get; set; } = default!;
+
+    [CascadingParameter]
+    public IModalService ModalService { get; set; } = default!;
+
+    private IEnumerable<ReportDto> _reports = new List<ReportDto>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        await GetReportsAsync();
+    }
+
+    private async Task GetReportsAsync()
+    {
+        try
+        {
+            _reports = await ReportsService.GetReportsAsync();
+        }
+        catch (Exception)
+        {
+            ToastService.ShowError(Localizer["error-loading-reports"]);
+        }
+    }
+
+    private async Task CreateReportAsync()
+    {
+        try
+        {
+            await ReportsService.CreateReportAsync();
+            ToastService.ShowSuccess(Localizer["report-created"]);
+
+            await GetReportsAsync();
+        }
+        catch (Exception)
+        {
+            ToastService.ShowError(Localizer["error-creating-report"]);
+        }
+    }
+
+    private async Task ShowDeleteModalAsync(int reportId, string generatedAt)
+    {
+        IModalReference modalReference = ModalService.Show<ReportDeleteModal>(Localizer["delete-report"],
+            new ModalParameters().Add("GeneratedAt", generatedAt));
+
+        ModalResult modalResult = await modalReference.Result;
+
+        if (!modalResult.Cancelled)
+        {
+            try
+            {
+                await ReportsService.DeleteReportAsync(reportId);
+
+                await GetReportsAsync();
+            }
+            catch (Exception)
+            {
+                ToastService.ShowError(Localizer["error-deleting-report"]);
+            }
+        }
+    }
+
+}

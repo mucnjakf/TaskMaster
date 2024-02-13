@@ -1,0 +1,39 @@
+﻿<div class="container">
+    <div class="row">
+        <div class="col">
+            <h5>@Localizer["delete-report-content"] <span class="fw-bold">@GeneratedAt</span>?</h5>
+        </div>
+    </div>
+
+    <hr/>
+
+    <div class="row">
+        <div class="col">
+            <button type="button" class="btn btn-danger" @onclick="DeleteAsync">@Localizer["confirm"]</button>
+            <button type="button" class="btn btn-secondary" @onclick="CancelAsync">@Localizer["cancel"]</button>
+        </div>
+    </div>
+</div>
+
+@code {
+
+    [Inject]
+    public IStringLocalizer<Resource> Localizer { get; set; } = default!;
+
+    [Parameter]
+    public string GeneratedAt { get; set; } = default!;
+
+    [CascadingParameter]
+    public BlazoredModalInstance BlazoredModalInstance { get; set; } = default!;
+
+    private async Task DeleteAsync()
+    {
+        await BlazoredModalInstance.CloseAsync(ModalResult.Ok());
+    }
+
+    private async Task CancelAsync()
+    {
+        await BlazoredModalInstance.CancelAsync();
+    }
+
+}

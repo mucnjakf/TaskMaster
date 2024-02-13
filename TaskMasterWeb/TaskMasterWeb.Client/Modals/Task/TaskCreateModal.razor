@@ -1,0 +1,157 @@
+﻿<div class="container">
+    <EditForm Model="@_taskCreateDto" OnValidSubmit="@CreateAsync">
+        <DataAnnotationsValidator/>
+
+        <div class="row">
+            <div class="col-12">
+                <label for="name" class="form-label">@Localizer["name"]:</label>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <InputText @bind-Value="@_taskCreateDto.Name" type="text" class="form-control mb-1" id="name"/>
+                <ValidationMessage For="@(() => _taskCreateDto.Name)"/>
+            </div>
+        </div>
+
+        <div class="row mt-3">
+            <div class="col-12">
+                <label for="status" class="form-label">@Localizer["status"]:</label>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <InputSelect @bind-Value="@_taskCreateDto.Status" class="form-select mb-1" id="status">
+                    @foreach (string status in Enum.GetNames(typeof(TaskStatus)))
+                    {
+                        <option value="@status">@LocalizationUtilities.LocalizeStatus(status, Localizer)</option>
+                    }
+                </InputSelect>
+                <ValidationMessage For="@(() => _taskCreateDto.Status)"/>
+            </div>
+        </div>
+
+        <div class="row mt-3">
+            <div class="col-12">
+                <label for="priority" class="form-label">@Localizer["priority"]:</label>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <InputSelect @bind-Value="@_taskCreateDto.Priority" class="form-select mb-1" id="priority">
+                    @foreach (string priority in Enum.GetNames(typeof(TaskPriority)))
+                    {
+                        <option value="@priority">@LocalizationUtilities.LocalizePriority(priority, Localizer)</option>
+                    }
+                </InputSelect>
+                <ValidationMessage For="@(() => _taskCreateDto.Priority)"/>
+            </div>
+        </div>
+
+        <div class="row mt-3">
+            <div class="col-12">
+                <label for="project" class="form-label">@Localizer["project"]:</label>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <InputSelect @bind-Value="@_projectId" class="form-select mb-1" id="project">
+                    @foreach (ProjectDto project in _projects)
+                    {
+                        <option value="@project.Id">@project.Name</option>
+                    }
+                </InputSelect>
+                <ValidationMessage For="@(() => _taskCreateDto.ProjectId)"/>
+            </div>
+        </div>
+
+        <div class="row mt-3">
+            <div class="col-12">
+                <label for="assignee" class="form-label">@Localizer["assignee"]:</label>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <InputSelect @bind-Value="@_assigneeId" class="form-select mb-1" id="assignee">
+                    @foreach (UserDto user in _users)
+                    {
+                        <option value="@user.Id">@($"{user.FirstName} {user.LastName}")</option>
+                    }
+                </InputSelect>
+                <ValidationMessage For="@(() => _taskCreateDto.AssigneeId)"/>
+            </div>
+        </div>
+
+        <hr/>
+
+        <div class="row">
+            <div class="col">
+                <button type="submit" class="btn btn-primary">@Localizer["confirm"]</button>
+                <button type="button" class="btn btn-secondary" @onclick="CancelAsync">@Localizer["cancel"]</button>
+            </div>
+        </div>
+    </EditForm>
+</div>
+
+@code {
+
+    [Inject]
+    public IProjectsService ProjectsService { get; set; } = default!;
+
+    [Inject]
+    public IUsersService UsersService { get; set; } = default!;
+
+    [Inject]
+    public IToastService ToastService { get; set; } = default!;
+
+    [Inject]
+    public IStringLocalizer<Resource> Localizer { get; set; } = default!;
+
+    [CascadingParameter]
+    public BlazoredModalInstance BlazoredModalInstance { get; set; } = default!;
+
+    private readonly TaskCreateDto _taskCreateDto = new();
+
+    private IEnumerable<ProjectDto> _projects = new List<ProjectDto>();
+
+    private IEnumerable<UserDto> _users = new List<UserDto>();
+
+    private int _projectId;
+
+    private int _assigneeId;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await InitializeProjectsAndUsersAsync();
+    }
+
+    private async Task InitializeProjectsAndUsersAsync()
+    {
+        try
+        {
+            _projects = await ProjectsService.GetProjectsAsync();
+            _users = await UsersService.GetUsersAsync();
+
+            _projectId = _projects.First().Id;
+            _assigneeId = _users.First().Id;
+        }
+        catch (Exception)
+        {
+            ToastService.ShowError(Localizer["error-loading-projects-and-users"]);
+        }
+    }
+
+    private async Task CreateAsync()
+    {
+        _taskCreateDto.ProjectId = _projectId;
+        _taskCreateDto.AssigneeId = _assigneeId;
+
+        await BlazoredModalInstance.CloseAsync(ModalResult.Ok(_taskCreateDto));
+    }
+
+    private async Task CancelAsync()
+    {
+        await BlazoredModalInstance.CancelAsync();
+    }
+
+}

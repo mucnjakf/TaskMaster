@@ -1,0 +1,75 @@
+﻿<div class="container">
+    <EditForm Model="@_userUpdateDto" OnValidSubmit="@UpdateAsync">
+        <DataAnnotationsValidator/>
+
+        <div class="row">
+            <div class="col-12">
+                <label for="firstName" class="form-label">@Localizer["first-name"]:</label>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <InputText @bind-Value="@_userUpdateDto.FirstName" type="text" class="form-control mb-1" id="firstName"/>
+                <ValidationMessage For="@(() => _userUpdateDto.FirstName)"/>
+            </div>
+        </div>
+
+        <div class="row mt-3">
+            <div class="col-12">
+                <label for="lastName" class="form-label">@Localizer["last-name"]:</label>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <InputText @bind-Value="@_userUpdateDto.LastName" type="text" class="form-control mb-1" id="lastName"/>
+                <ValidationMessage For="@(() => _userUpdateDto.LastName)"/>
+            </div>
+        </div>
+
+        <hr/>
+
+        <div class="row">
+            <div class="col">
+                <button type="submit" class="btn btn-primary">@Localizer["confirm"]</button>
+                <button type="button" class="btn btn-secondary" @onclick="CancelAsync">@Localizer["cancel"]</button>
+            </div>
+        </div>
+    </EditForm>
+</div>
+
+@code {
+
+    [Inject]
+    public IStringLocalizer<Resource> Localizer { get; set; } = default!;
+
+    [Parameter]
+    public UserDto User { get; set; } = default!;
+
+    [CascadingParameter]
+    public BlazoredModalInstance BlazoredModalInstance { get; set; } = default!;
+
+    private readonly UserUpdateDto _userUpdateDto = new();
+
+    protected override void OnInitialized()
+    {
+        InitializeUserUpdateDto();
+    }
+
+    private void InitializeUserUpdateDto()
+    {
+        _userUpdateDto.FirstName = User.FirstName;
+        _userUpdateDto.LastName = User.LastName;
+    }
+
+    private async Task UpdateAsync()
+    {
+        await BlazoredModalInstance.CloseAsync(ModalResult.Ok(_userUpdateDto));
+    }
+
+    private async Task CancelAsync()
+    {
+        await BlazoredModalInstance.CancelAsync();
+    }
+
+
+}

@@ -1,0 +1,103 @@
+﻿<div class="container">
+    <div class="row">
+        <div class="col-6">
+            ID:
+        </div>
+        <div class="col-6">
+            @Localizer["name"]:
+        </div>
+    </div>
+    <div class="row lead fw-bold">
+        <div class="col-6">
+            @Project.Id
+        </div>
+        <div class="col-6">
+            @Project.Name
+        </div>
+    </div>
+
+    <hr/>
+
+    <div class="row mt-3">
+        <div class="col-12">
+            @Localizer["description"]:
+        </div>
+    </div>
+    <div class="row lead fw-bold">
+        <div class="col-12">
+            @Project.Description
+        </div>
+    </div>
+
+    <hr/>
+
+    <div class="row mt-3">
+        <div class="col-6">
+            @Localizer["assignee-email"]:
+        </div>
+        <div class="col-6">
+            @Localizer["assignee-full-name"]:
+        </div>
+    </div>
+    <div class="row lead fw-bold">
+        <div class="col-6">
+            @Project.Assignee.Email
+        </div>
+        <div class="col-6">
+            @Project.Assignee.FullName
+        </div>
+    </div>
+
+    <hr/>
+
+    <div class="row mt-3">
+        <div class="col-12">
+            @Localizer["tasks"]
+        </div>
+    </div>
+    <div class="row mt-2">
+        <div class="col-12">
+            <ul class="list-group">
+                @if (Project.Tasks is null || !Project.Tasks.Any())
+                {
+                    <li class="list-group-item list-group-item-danger">@Localizer["no-tasks-found"]</li>
+                }
+                else
+                {
+                    @foreach (ProjectTaskDto task in Project.Tasks)
+                    {
+                        <li class="list-group-item">
+                            <span>@task.Id</span> | <span>@task.Name</span> | <span>@LocalizationUtilities.LocalizePriority(task.Priority, Localizer)</span> | <span>@LocalizationUtilities.LocalizeStatus(task.Status, Localizer)</span> | <span>@task.Assignee</span>
+                        </li>
+                    }
+                }
+            </ul>
+        </div>
+    </div>
+
+    <hr/>
+
+    <div class="row">
+        <div class="col">
+            <button class="btn btn-primary" @onclick="CloseAsync">@Localizer["close"]</button>
+        </div>
+    </div>
+</div>
+
+@code {
+
+    [Inject]
+    public IStringLocalizer<Resource> Localizer { get; set; } = default!;
+
+    [Parameter]
+    public ProjectDto Project { get; set; } = default!;
+
+    [CascadingParameter]
+    public BlazoredModalInstance BlazoredModalInstance { get; set; } = default!;
+
+    private async Task CloseAsync()
+    {
+        await BlazoredModalInstance.CloseAsync(ModalResult.Cancel());
+    }
+
+}

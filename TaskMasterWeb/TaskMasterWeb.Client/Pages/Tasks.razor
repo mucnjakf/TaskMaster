@@ -1,0 +1,166 @@
+﻿@page "/tasks"
+
+@layout MainLayout
+
+@attribute [Authorize]
+
+<PageTitle>TaskMaster - @Localizer["tasks"]</PageTitle>
+
+<div class="d-flex justify-content-between mb-3">
+    <h1 class="m-0">@Localizer["tasks"]</h1>
+    <button type="button" class="btn btn-success" @onclick="ShowCreateModalAsync">@Localizer["create-task"]</button>
+</div>
+
+@if (!_tasks.Any())
+{
+    <div class="alert alert-danger text-center" role="alert">
+        @Localizer["no-tasks-found"]
+    </div>
+}
+else
+{
+    <table class="table table-striped table-hover table-bordered">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>@Localizer["name"]</th>
+            <th>@Localizer["status"]</th>
+            <th>@Localizer["priority"]</th>
+            <th style="width: 10rem;"></th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (TaskDto task in _tasks)
+        {
+            <tr>
+                <td>@task.Id</td>
+                <td>@task.Name</td>
+                <td>@LocalizationUtilities.LocalizeStatus(task.Status, Localizer)</td>
+                <td>@LocalizationUtilities.LocalizePriority(task.Priority, Localizer)</td>
+                <td style="width: 10rem;" class="justify-content-between d-flex">
+                    <button type="button" class="btn btn-primary" @onclick="() => ShowDetailsModal(task)">
+                        <span class="oi oi-document"></span>
+                    </button>
+                    <button type="button" class="btn btn-secondary" @onclick="() => ShowUpdateModalAsync(task)">
+                        <span class="oi oi-pencil"></span>
+                    </button>
+                    <button type="button" class="btn btn-danger" @onclick="() => ShowDeleteModalAsync(task.Id, task.Name)">
+                        <span class="oi oi-trash"></span>
+                    </button>
+                </td>
+            </tr>
+        }
+        </tbody>
+    </table>
+}
+
+@code {
+
+    [Inject]
+    public ITasksService TasksService { get; set; } = default!;
+
+    [Inject]
+    public IToastService ToastService { get; set; } = default!;
+
+    [Inject]
+    public IStringLocalizer<Resource> Localizer { get; set; } = default!;
+
+    [CascadingParameter]
+    public IModalService ModalService { get; set; } = default!;
+
+    private IEnumerable<TaskDto> _tasks = new List<TaskDto>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        await GetTasksAsync();
+    }
+
+    private async Task GetTasksAsync()
+    {
+        try
+        {
+            _tasks = await TasksService.GetTasksAsync();
+        }
+        catch (Exception)
+        {
+            ToastService.ShowError(Localizer["error-loading-tasks"]);
+        }
+    }
+
+    private async Task ShowCreateModalAsync()
+    {
+        IModalReference modalReference = ModalService.Show<TaskCreateModal>(Localizer["create-task"]);
+
+        ModalResult modalResult = await modalReference.Result;
+
+        if (modalResult.Confirmed)
+        {
+            try
+            {
+                TaskCreateDto taskCreateDto = (TaskCreateDto)modalResult.Data!;
+
+                await TasksService.CreateTaskAsync(taskCreateDto);
+
+                await GetTasksAsync();
+            }
+            catch (Exception)
+            {
+                ToastService.ShowError(Localizer["error-creating-task"]);
+            }
+        }
+    }
+
+    private void ShowDetailsModal(TaskDto task)
+    {
+        ModalService.Show<TaskDetailsModal>(Localizer["task-details"],
+            new ModalParameters().Add("Task", task),
+            new ModalOptions { Size = ModalSize.Large });
+    }
+
+    private async Task ShowUpdateModalAsync(TaskDto task)
+    {
+        IModalReference modalReference = ModalService.Show<TaskUpdateModal>(Localizer["update-task"],
+            new ModalParameters().Add("Task", task));
+
+        ModalResult modalResult = await modalReference.Result;
+
+        if (modalResult.Confirmed)
+        {
+            try
+            {
+                TaskUpdateDto taskUpdateDto = (TaskUpdateDto)modalResult.Data!;
+
+                await TasksService.UpdateTaskAsync(task.Id, taskUpdateDto);
+
+                await GetTasksAsync();
+            }
+            catch (Exception)
+            {
+                ToastService.ShowError(Localizer["error-updating-task"]);
+            }
+        }
+    }
+
+    private async Task ShowDeleteModalAsync(int taskId, string taskName)
+    {
+        IModalReference modalReference = ModalService.Show<TaskDeleteModal>(Localizer["delete-task"],
+            new ModalParameters().Add("TaskName", taskName));
+
+        ModalResult modalResult = await modalReference.Result;
+
+        if (modalResult.Confirmed)
+        {
+            try
+            {
+                await TasksService.DeleteTaskAsync(taskId);
+
+                await GetTasksAsync();
+            }
+            catch (Exception)
+            {
+                ToastService.ShowError(Localizer["error-deleting-task"]);
+            }
+        }
+    }
+
+}
