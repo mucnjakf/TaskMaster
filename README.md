@@ -1,6 +1,6 @@
 # TaskMaster
 
-Task Management Web Application - 2023.
+Task & Project Management Web Application - 2023.
 
 ---
 
