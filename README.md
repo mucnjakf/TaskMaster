@@ -15,7 +15,7 @@ TaskMaster is a task and project management system. With TaskMaster, users can e
   - Blazored - Local Storage | Modal | Toast
   - Syncfusion Blazor
   - Bootstrap 5
-- JAVA
+- Java
   - Java 21
   - Spring Boot
   - JPA & Hibernate
