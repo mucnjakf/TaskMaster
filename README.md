@@ -16,8 +16,7 @@ TaskMaster is a task and project management system. With TaskMaster, users can e
   - Syncfusion Blazor
   - Bootstrap 5
 - Java
-  - Java 21
-  - Spring Boot
+  - Java 21 Spring Boot
   - JPA & Hibernate
   - Lombok
   - jUnit
