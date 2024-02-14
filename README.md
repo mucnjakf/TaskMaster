@@ -1,15 +1,15 @@
-# TaskMaster
+# <img src="taskmaster.png" width="25"/> TaskMaster
 
+### **👁️ Overview**
 Task & Project Management Web Application - 2023.
 
----
+<p align="justify">
+  TaskMaster is a task and project management system. With TaskMaster, users can easily create, update, and delete tasks and projects, ensuring flexibility and adaptability to changing project requirements. The Kanban board offers a visual representation of tasks' status and progress, enabling teams to manage workflows effectively and prioritize tasks accordingly.
+</p>
 
-### **Overview**
-TaskMaster is a task and project management system. With TaskMaster, users can easily create, update, and delete tasks and projects, ensuring flexibility and adaptability to changing project requirements. The Kanban board offers a visual representation of tasks' status and progress, enabling teams to manage workflows effectively and prioritize tasks accordingly.
+#
 
----
-
-### **Tech Stack**
+### **⚙️ Tech Stack**
 - .NET
   - .NET 7 - ASP.NET Core Blazor WebAssembly
   - Blazored - Local Storage | Modal | Toast
@@ -25,12 +25,10 @@ TaskMaster is a task and project management system. With TaskMaster, users can e
 - Database
   - PostgreSQL
 
----
+#
 
-### **Tools**
+### **🛠️ Tools**
 - Source Control: GitHub
 - IDE: IntelliJ IDEA | Rider
 - API Client: Postman
 - RDBMS: DataGrip
-
----
