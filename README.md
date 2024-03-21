@@ -1,4 +1,4 @@
-# <img src="taskmaster.png" width="25"/> TaskMaster
+# <img src="taskmaster.svg" width="25"/> TaskMaster
 
 ### **👁️ Overview**
 Task & Project Management Web Application - 2023.
