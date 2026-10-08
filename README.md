@@ -4,7 +4,7 @@
 Task & Project Management Web Application - 2023.
 
 <p align="justify">
-  TaskMaster is a task and project management system. With TaskMaster, users can easily create, update, and delete tasks and projects, ensuring flexibility and adaptability to changing project requirements. The Kanban board offers a visual representation of tasks' status and progress, enabling teams to manage workflows effectively and prioritize tasks accordingly.
+  TaskMaster is a task and project management system. With TaskMaster, users can easily create, update, and delete tasks and projects, ensuring flexibility and adaptability to changing project requirements.
 </p>
 
 #
@@ -24,11 +24,3 @@ Task & Project Management Web Application - 2023.
   - Maven
 - Database
   - PostgreSQL
-
-#
-
-### **🛠️ Tools**
-- Source Control: GitHub
-- IDE: IntelliJ IDEA | Rider
-- API Client: Postman
-- RDBMS: DataGrip
